@@ -5,6 +5,10 @@ import com.accesa.pricecomparator.service.CsvDataLoaderService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * REST controller for product recommendation endpoints.
+ * Provides endpoints to get best value products by name and date.
+ */
 @RestController
 @RequestMapping("/recommendations")
 public class RecommendationController {
@@ -14,6 +18,12 @@ public class RecommendationController {
         this.csvDataLoaderService = csvDataLoaderService;
     }
 
+    /**
+     * Returns a list of best value products for a given product name and date, sorted by value per unit.
+     * @param productName The product name to search for.
+     * @param date The date (YYYY-MM-DD).
+     * @return List of product info maps sorted by value per unit.
+     */
     @GetMapping
     public List<java.util.Map<String, Object>> getBestValueProducts(@RequestParam String productName, @RequestParam String date) {
         java.util.List<java.util.Map<String, Object>> results = new java.util.ArrayList<>();

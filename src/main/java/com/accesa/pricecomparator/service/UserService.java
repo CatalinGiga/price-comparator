@@ -8,6 +8,9 @@ import java.io.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+/**
+ * Service for managing users and their price alerts, including persistence to file.
+ */
 public class UserService {
     private static final Map<String, User> users = new HashMap<>();
     private static final Map<String, List<PriceAlert>> userAlerts = new HashMap<>();
@@ -15,10 +18,24 @@ public class UserService {
     private static final String ALERTS_FILE = "alerts.json";
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    // Getters for testing
+    public static Map<String, User> getUsers() {
+        return users;
+    }
+
+    public static Map<String, List<PriceAlert>> getUserAlerts() {
+        return userAlerts;
+    }
+
     static {
         loadFromFile();
     }
 
+    /**
+     * Registers a new user with validation.
+     * @param user The user to register.
+     * @return Null if successful, or a validation error message.
+     */
     public static synchronized String addUser(User user) {
         if (user.getUserId() == null || user.getUserId().isEmpty()) return "userId required";
         if (user.getName() == null || user.getName().isEmpty()) return "name required";
@@ -31,10 +48,20 @@ public class UserService {
         return null;
     }
 
+    /**
+     * Retrieves a user by userId.
+     * @param userId The user's ID.
+     * @return The User object, or null if not found.
+     */
     public static User getUser(String userId) {
         return users.get(userId);
     }
 
+    /**
+     * Adds or updates a price alert for a user.
+     * @param userId The user's ID.
+     * @param alert The price alert to add or update.
+     */
     public static synchronized void addAlert(String userId, PriceAlert alert) {
         userAlerts.computeIfAbsent(userId, k -> new ArrayList<>());
         userAlerts.get(userId).removeIf(a -> a.getProductName().equalsIgnoreCase(alert.getProductName()) &&
@@ -43,6 +70,11 @@ public class UserService {
         saveToFile();
     }
 
+    /**
+     * Retrieves all price alerts for a user.
+     * @param userId The user's ID.
+     * @return List of PriceAlert objects.
+     */
     public static List<PriceAlert> getAlerts(String userId) {
         return userAlerts.getOrDefault(userId, new ArrayList<>());
     }

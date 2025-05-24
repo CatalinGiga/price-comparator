@@ -2,6 +2,9 @@ package com.accesa.pricecomparator.model;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a discount for a product in the price comparator system.
+ */
 public class Discount {
     private String productId;
     private String productName;

@@ -1,5 +1,8 @@
 package com.accesa.pricecomparator.model;
 
+/**
+ * Represents a user in the price comparator system.
+ */
 public class User {
     private String userId;
     private String name;

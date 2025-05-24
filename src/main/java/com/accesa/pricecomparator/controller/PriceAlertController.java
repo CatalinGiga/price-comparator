@@ -7,10 +7,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * REST controller for managing user registration and price alerts.
+ */
 @RestController
 @RequestMapping("/alerts")
 public class PriceAlertController {
 
+    /**
+     * Registers a new user.
+     * @param user The user to register.
+     * @return Success message or validation error.
+     */
     @PostMapping("/user")
     public String addUser(@RequestBody User user) {
         String validation = UserService.addUser(user);
@@ -20,21 +28,42 @@ public class PriceAlertController {
         return "User registered successfully";
     }
 
+    /**
+     * Retrieves a user by userId.
+     * @param userId The user's ID.
+     * @return The User object, or null if not found.
+     */
     @GetMapping("/user")
     public User getUser(@RequestParam String userId) {
         return UserService.getUser(userId);
     }
 
+    /**
+     * Sets a price alert for a user.
+     * @param userId The user's ID.
+     * @param alert The price alert to set.
+     */
     @PostMapping
     public void setAlert(@RequestParam String userId, @RequestBody PriceAlert alert) {
         UserService.addAlert(userId, alert);
     }
 
+    /**
+     * Retrieves all price alerts for a user.
+     * @param userId The user's ID.
+     * @return List of PriceAlert objects.
+     */
     @GetMapping
     public List<PriceAlert> getAlerts(@RequestParam String userId) {
         return UserService.getAlerts(userId);
     }
 
+    /**
+     * Checks all alerts for a user and date, and returns those that are triggered (i.e., product is at or below target price).
+     * @param userId The user's ID.
+     * @param date The date to check (YYYY-MM-DD).
+     * @return List of triggered alerts with store and product info.
+     */
     @GetMapping("/check")
     public List<java.util.Map<String, Object>> checkAlerts(@RequestParam String userId, @RequestParam String date) {
         List<java.util.Map<String, Object>> triggered = new ArrayList<>();
@@ -52,6 +81,7 @@ public class PriceAlertController {
                     if (nameMatch && brandMatch) {
                         double price = p.getPrice();
                         double bestDiscount = 0.0;
+                        // Find the best discount for this product
                         for (com.accesa.pricecomparator.model.Discount d : discounts) {
                             boolean dNameMatch = d.getProductName().equalsIgnoreCase(alert.getProductName());
                             boolean dBrandMatch = (alert.getBrand() == null || alert.getBrand().isEmpty() || (d.getBrand() != null && d.getBrand().equalsIgnoreCase(alert.getBrand())));

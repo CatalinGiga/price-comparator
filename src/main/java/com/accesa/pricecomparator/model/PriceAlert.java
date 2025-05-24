@@ -2,6 +2,9 @@ package com.accesa.pricecomparator.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+ * Represents a price alert set by a user for a product.
+ */
 public class PriceAlert {
     private String productName;
     /**

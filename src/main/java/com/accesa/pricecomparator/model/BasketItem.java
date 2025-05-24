@@ -2,6 +2,10 @@ package com.accesa.pricecomparator.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+ * Represents an item in a shopping basket for optimization.
+ * Used in basket optimization endpoints to specify the product, quantity, and optional brand filter.
+ */
 public class BasketItem {
     private String productName;
     private double quantity;

@@ -17,10 +17,17 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import com.opencsv.CSVReader;
 
+/**
+ * Service for loading product and discount data from CSV files for different stores and dates.
+ */
 @Service
 public class CsvDataLoaderService {
     private static final String DATA_PATH = "src/main/resources/data/";
 
+    /**
+     * Returns a list of all available store names based on CSV files in the data directory.
+     * @return List of store names.
+     */
     public List<String> getAvailableStores() {
         try {
             return Files.list(Paths.get(DATA_PATH))
@@ -33,6 +40,10 @@ public class CsvDataLoaderService {
         }
     }
 
+    /**
+     * Returns a list of all available dates (YYYY-MM-DD) based on CSV files in the data directory.
+     * @return List of available dates.
+     */
     public List<String> getAvailableDates() {
         try {
             return Files.list(Paths.get(DATA_PATH))
@@ -78,14 +89,26 @@ public class CsvDataLoaderService {
         return null;
     }
 
-    public List<Product> loadProducts(String storeName, String date) {
-        String fileName = findPriceFileForDate(storeName, date);
+    /**
+     * Loads all products for a given store and date by selecting the correct CSV file.
+     * @param store The store name (e.g., Lidl, Profi, Kaufland).
+     * @param date The date (YYYY-MM-DD) for which to load products.
+     * @return List of Product objects for the store and date.
+     */
+    public List<Product> loadProducts(String store, String date) {
+        String fileName = findPriceFileForDate(store, date);
         if (fileName == null) return Collections.emptyList();
         return readProductsFromCsv(fileName);
     }
 
-    public List<Discount> loadDiscounts(String storeName, String date) {
-        String fileName = findDiscountFileForDate(storeName, date);
+    /**
+     * Loads all discounts for a given store and date by selecting the correct CSV file.
+     * @param store The store name.
+     * @param date The date (YYYY-MM-DD) for which to load discounts.
+     * @return List of Discount objects for the store and date.
+     */
+    public List<Discount> loadDiscounts(String store, String date) {
+        String fileName = findDiscountFileForDate(store, date);
         if (fileName == null) return Collections.emptyList();
         return readDiscountsFromCsv(fileName);
     }
@@ -113,6 +136,11 @@ public class CsvDataLoaderService {
         return history;
     }
 
+    /**
+     * Reads products from a specific CSV file.
+     * @param fileName The CSV file name.
+     * @return List of Product objects parsed from the file.
+     */
     public List<Product> readProductsFromCsv(String fileName) {
         List<Product> products = new ArrayList<>();
         try (InputStream is = Files.newInputStream(Paths.get(DATA_PATH + fileName));
@@ -168,11 +196,16 @@ public class CsvDataLoaderService {
         return discounts;
     }
 
-    public List<Discount> loadAllDiscountsForStore(String storeName) {
+    /**
+     * Loads all discounts for a given store from all available CSV files.
+     * @param store The store name.
+     * @return List of all Discount objects for the store.
+     */
+    public List<Discount> loadAllDiscountsForStore(String store) {
         List<Discount> allDiscounts = new ArrayList<>();
         List<String> dates = getAvailableDates();
         for (String date : dates) {
-            String fileName = storeName + "_discounts_" + date + ".csv";
+            String fileName = store + "_discounts_" + date + ".csv";
             allDiscounts.addAll(readDiscountsFromCsv(fileName));
         }
         return allDiscounts;

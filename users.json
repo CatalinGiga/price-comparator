@@ -1,12 +1,7 @@
 {
-  "1" : {
-    "userId" : "1",
-    "name" : "Catalin Giga",
-    "email" : "catalin.giga@gmail.com"
-  },
-  "2" : {
-    "userId" : "2",
-    "name" : "Denisa",
-    "email" : "deniii@gmail.com"
+  "test1" : {
+    "userId" : "test1",
+    "name" : "Test User 1",
+    "email" : "test@example.com"
   }
 }

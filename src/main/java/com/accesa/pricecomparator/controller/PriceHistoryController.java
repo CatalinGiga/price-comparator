@@ -5,6 +5,10 @@ import com.accesa.pricecomparator.service.CsvDataLoaderService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * REST controller for price history endpoints.
+ * Provides endpoints to get price history for a product by name and brand.
+ */
 @RestController
 @RequestMapping("/history")
 public class PriceHistoryController {
@@ -14,6 +18,12 @@ public class PriceHistoryController {
         this.csvDataLoaderService = csvDataLoaderService;
     }
 
+    /**
+     * Returns the price history for a product by name and optional brand.
+     * @param productName The product name.
+     * @param brand The brand (optional).
+     * @return List of PriceHistoryEntry objects sorted by store and date.
+     */
     @GetMapping("/{productName}")
     public List<PriceHistoryEntry> getPriceHistoryByName(@PathVariable String productName, @RequestParam(required = false) String brand) {
         List<PriceHistoryEntry> history = new java.util.ArrayList<>();

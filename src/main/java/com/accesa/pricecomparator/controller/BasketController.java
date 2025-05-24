@@ -8,15 +8,31 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * REST controller for basket optimization endpoints.
+ * Provides endpoints to optimize a shopping basket across stores and apply discounts.
+ */
 @RestController
 @RequestMapping("/basket")
 public class BasketController {
     private final CsvDataLoaderService csvDataLoaderService;
 
+    /**
+     * Constructor for dependency injection.
+     * @param csvDataLoaderService The service for loading product and discount data.
+     */
     public BasketController(CsvDataLoaderService csvDataLoaderService) {
         this.csvDataLoaderService = csvDataLoaderService;
     }
 
+    /**
+     * Calculates the discounted price for a product, considering brand and date.
+     * @param product The product.
+     * @param discounts List of discounts.
+     * @param date The date for which to check discounts.
+     * @param brand The brand to filter discounts (optional).
+     * @return The discounted price.
+     */
     private double calculateDiscountedPriceWithBrand(Product product, List<Discount> discounts, LocalDate date, String brand) {
         double price = product.getPrice();
         Optional<Discount> applicableDiscount = discounts.stream()
@@ -32,6 +48,11 @@ public class BasketController {
         return price;
     }
 
+    /**
+     * Rounds a value to two decimal places.
+     * @param value The value to round.
+     * @return The rounded value.
+     */
     private double round2(double value) {
         return Math.round(value * 100.0) / 100.0;
     }

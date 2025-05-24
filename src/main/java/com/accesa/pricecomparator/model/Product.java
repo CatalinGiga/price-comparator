@@ -1,5 +1,8 @@
 package com.accesa.pricecomparator.model;
 
+/**
+ * Represents a product in the price comparator system.
+ */
 public class Product {
     private String productId;
     private String productName;

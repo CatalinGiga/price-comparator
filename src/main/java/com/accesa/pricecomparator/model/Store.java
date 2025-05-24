@@ -1,5 +1,8 @@
 package com.accesa.pricecomparator.model;
 
+/**
+ * Represents a store in the price comparator system.
+ */
 public class Store {
     private String name;
 

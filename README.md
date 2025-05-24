@@ -46,44 +46,57 @@ This is a Java Spring Boot backend for a price comparator application. It allows
 - Email notifications are simulated with console output.
 
 ## API Usage & Example Requests
+All examples below use real data from the provided CSVs and users.json. You can copy-paste and they will work directly.
+
 ### User & Alerts
 - **Register a user:**
   ```http
   POST /alerts/user
   Content-Type: application/json
   {
-    "userId": "user1",
-    "name": "Alice",
-    "email": "alice@example.com"
+    "userId": "test1",
+    "name": "Test User 1",
+    "email": "test@example.com"
   }
   ```
 - **Set a price alert:**
   ```http
-  POST /alerts?userId=user1
+  POST /alerts?userId=test1
   Content-Type: application/json
   {
-    "productName": "Milk",
-    "brand": "Lactalis",   // Optional
-    "targetPrice": 5.99
+    "productName": "lapte zuzu",
+    "brand": "Zuzu",
+    "targetPrice": 9.80
   }
   ```
 - **Get all alerts for a user:**
   ```http
-  GET /alerts?userId=user1
+  GET /alerts?userId=test1
   ```
 - **Check triggered alerts for a date:**
   ```http
-  GET /alerts/check?userId=user1&date=2024-05-20
+  GET /alerts/check?userId=test1&date=2025-05-08
   ```
 
 ### Basket Optimization
 - **Split optimize basket:**
   ```http
-  POST /basket/split-optimize?date=2024-05-20
+  POST /basket/split-optimize?date=2025-05-02
   Content-Type: application/json
   [
-    { "productName": "Milk", "quantity": 2, "brand": "Lactalis" },
-    { "productName": "Bread", "quantity": 1 }
+    {
+        "productName": "pâine albă",
+        "quantity": 5
+    },
+    {
+        "productName": "detergent lichid",
+        "quantity": 2
+    },
+    {
+        "productName": "detergent lichid",
+        "quantity": 1,
+        "brand": "Persil"
+    }
   ]
   ```
   - Returns the best store for each item, applying discounts if available.
@@ -91,37 +104,42 @@ This is a Java Spring Boot backend for a price comparator application. It allows
 ### Discounts
 - **Get all discounts for a date:**
   ```http
-  GET /discounts?date=2024-05-20
+  GET /discounts?date=2025-05-08
   ```
 - **Get top 10 best discounts for a date:**
   ```http
-  GET /discounts/best?date=2024-05-20
+  GET /discounts/best?date=2025-05-08
   ```
 - **Get best discount for each unique product name:**
   ```http
-  GET /discounts/bestDiscountForProductsWithDifferentName?date=2024-05-20
+  GET /discounts/bestDiscountForProductsWithDifferentName?date=2025-05-08
+  ```
+- **Get new discounts starting on a date:**
+  ```http
+  GET /discounts/new?date=2025-05-08
   ```
 
 ### Products
 - **Get all products for a store and date:**
   ```http
-  GET /products?store=Lidl&date=2024-05-20
+  GET /products?store=lidl&date=2025-05-08
   ```
 - **Get product by ID:**
   ```http
-  GET /products/{productId}?store=Lidl&date=2024-05-20
+  GET /products/P001?store=lidl&date=2025-05-08
   ```
 
 ### Recommendations
 - **Get best value products by name and date:**
   ```http
-  GET /recommendations?productName=Milk&date=2024-05-20
+  GET /recommendations?productName=lapte%20zuzu&date=2025-05-01
   ```
 
 ### Price History
 - **Get price history for a product by name and brand:**
   ```http
-  GET /history/Milk?brand=Lactalis
+  GET /history/lapte%20zuzu
+  GET /history/detergent%20lichid?brand=Ariel
   ```
 
 ---

@@ -1,4 +1,9 @@
 # Price Comparator Backend - Accesa Internship Project
+
+
+https://github.com/user-attachments/assets/46e9e2fa-b5f2-4622-b2de-ee4400a44ffa
+
+
 ## Overview
 This is a Java Spring Boot backend for a price comparator application. It allows users to compare product prices and discounts across multiple stores (Lidl, Profi, Kaufland) using weekly CSV files. The backend supports basket optimization, price alerts, and provides a REST API with Swagger UI documentation.
 
